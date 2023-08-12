@@ -1,6 +1,14 @@
+'use client'
+import { useState } from "react";
 import FeedbackItem from "./components/FeedbackItem";
+import FeedbackFormPopup from "./components/FeedbackFormPopup";
+import Button from "./components/Button";
 
 export default function Home() {
+  const [showFeedbackPopup, setShowFeedBackPopup] = useState(false);
+  function openFeedbackPopup() {
+    setShowFeedBackPopup(true);
+  }
   return (
     <main className="bg-white md:max-w-2xl mx-auto md:shadow-lg md:rounded-lg md:mt-8 overflow-hidden">
       <div className="bg-gradient-to-r from-cyan-500 to-blue-400 p-8">
@@ -10,7 +18,8 @@ export default function Home() {
       <div className="bg-gray-100 px-8 py-4 flex border-b">
         <div className="grow"></div>
         <div>
-          <button className="bg-blue-500 py-1 px-4 rounded-md text-white text-opacity-90">Make a suggestion</button>
+
+          <Button primary onClick={openFeedbackPopup}>Make a suggestion</Button>
         </div>
       </div>
       <div className="px-8 ">
@@ -20,6 +29,9 @@ export default function Home() {
         <FeedbackItem />
         <FeedbackItem />
       </div>
+      {showFeedbackPopup && (
+        <FeedbackFormPopup setShow={setShowFeedBackPopup} />
+      )}
     </main>
   )
 }
