@@ -14,7 +14,15 @@ export default function FeedbackFormPopup({ setShow }) {
                 setShow(false);
             })
     }
-
+    async function handleAttachFilesInputChange(ev) {
+        const files = [...ev.target.files];
+        const data = new FormData();
+        for (const file of files) {
+            data.append('file', file);
+        }
+        const res = await axios.post('/api/upload', data);
+        console.log(res);
+    }
 
     return (
         <Popup setShow={setShow} title={'Make a suggestion'}>
@@ -34,7 +42,10 @@ export default function FeedbackFormPopup({ setShow }) {
                     onChange={ev => setDescription(ev.target.value)}
                 />
                 <div className="flex gap-2 mt-2 justify-end">
-                    <Button>Attach Files</Button>
+                    <label className="py-2 px-4 text-gray-600 cursor-pointer">
+                        <span>Attach files</span>
+                        <input multiple onChange={handleAttachFilesInputChange} type="file" className="hidden" />
+                    </label>
                     <Button primary onClick={handleCreatePostButtonClick}>Create Post</Button>
                 </div>
             </form>
