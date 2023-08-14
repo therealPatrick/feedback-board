@@ -9,6 +9,7 @@ export async function POST(req) {
         },
     });
     const formData = await req.formData();
+    const links = [];
     for (const fileInfo in formData) {
         const file = fileInfo[1];
         const name = Date.now().toString() + file.name;
@@ -24,7 +25,8 @@ export async function POST(req) {
             Body: buffer,
             ContentType: file.type,
         }))
-        console.log('https://feedback-board-uploads.s3.amazon.com/' + name)
+        links.push('https://feedback-board-uploads.s3.amazon.com/' + name)
+
     }
-    return Response.json('ok');
+    return Response.json(links);
 }

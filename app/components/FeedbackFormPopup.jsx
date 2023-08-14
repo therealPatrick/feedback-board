@@ -4,8 +4,9 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function FeedbackFormPopup({ setShow }) {
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [uploads, setUploads] = useState([]);
 
     function handleCreatePostButtonClick(ev) {
         ev.preventDefault();
@@ -21,7 +22,7 @@ export default function FeedbackFormPopup({ setShow }) {
             data.append('file', file);
         }
         const res = await axios.post('/api/upload', data);
-        console.log(res);
+        setUploads(res.data);
     }
 
     return (
@@ -41,6 +42,21 @@ export default function FeedbackFormPopup({ setShow }) {
                     value={description}
                     onChange={ev => setDescription(ev.target.value)}
                 />
+                {uploads?.length > 0 && (
+                    <div>
+                        <div className="flex gap-2">
+                            {uploads.map(link => (
+                                <div className="h-16 ">
+                                    {link.endsWith('.jpg') ? (
+                                        <img className="h-16 w-auto rounded-md" src={link} alt="" />
+                                    ) : (
+                                        <div>{link}</div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
                 <div className="flex gap-2 mt-2 justify-end">
                     <label className="py-2 px-4 text-gray-600 cursor-pointer">
                         <span>Attach files</span>
