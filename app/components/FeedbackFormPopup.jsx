@@ -3,6 +3,7 @@ import Button from "./Button";
 import { useState } from "react";
 import axios from "axios";
 import PaperClip from "./icons/PaperClip";
+import Trash from "./icons/Trash";
 
 export default function FeedbackFormPopup({ setShow }) {
     const [title, setTitle] = useState('');
@@ -27,6 +28,12 @@ export default function FeedbackFormPopup({ setShow }) {
             return [...existingUpload, ...res.data]
         });
     }
+    function handleRemoveFileButtonClick(ev, link) {
+        ev.preventDefault();
+        setUploads(currentUploads => {
+            return currentUploads.filter(val => val !== link);
+        });
+    }
 
     return (
         <Popup setShow={setShow} title={'Make a suggestion'}>
@@ -48,9 +55,15 @@ export default function FeedbackFormPopup({ setShow }) {
                 {uploads?.length > 0 && (
                     <div>
                         <label className="block mt-2 mb-1 text-slate-700">Attachments</label>
-                        <div className="flex gap-2">
+                        <div className="flex gap-3">
                             {uploads.map(link => (
-                                <a href={link} target="_blank" className="h-16 ">
+                                <a href={link} target="_blank" className="h-16 relative">
+                                    <button onClick={ev => handleRemoveFileButtonClick(ev, link)}
+                                        className="-right-2 -top-2 absolute
+                                      bg-red-400 p-1 rounded-md 
+                                      text-white">
+                                        <Trash />
+                                    </button>
                                     {(link.endsWith('.jpg') || link.endsWith('.png')) ? (
                                         <img className="h-16 w-auto rounded-md" src={link} alt="" />
                                     ) : (
