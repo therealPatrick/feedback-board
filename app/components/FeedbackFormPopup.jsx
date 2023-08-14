@@ -2,6 +2,7 @@ import Popup from "./Popup";
 import Button from "./Button";
 import { useState } from "react";
 import axios from "axios";
+import PaperClip from "./icons/PaperClip";
 
 export default function FeedbackFormPopup({ setShow }) {
     const [title, setTitle] = useState('');
@@ -22,7 +23,9 @@ export default function FeedbackFormPopup({ setShow }) {
             data.append('file', file);
         }
         const res = await axios.post('/api/upload', data);
-        setUploads(res.data);
+        setUploads((existingUpload) => {
+            return [...existingUpload, ...res.data]
+        });
     }
 
     return (
@@ -44,15 +47,19 @@ export default function FeedbackFormPopup({ setShow }) {
                 />
                 {uploads?.length > 0 && (
                     <div>
+                        <label className="block mt-2 mb-1 text-slate-700">Attachments</label>
                         <div className="flex gap-2">
                             {uploads.map(link => (
-                                <div className="h-16 ">
-                                    {link.endsWith('.jpg') ? (
+                                <a href={link} target="_blank" className="h-16 ">
+                                    {(link.endsWith('.jpg') || link.endsWith('.png')) ? (
                                         <img className="h-16 w-auto rounded-md" src={link} alt="" />
                                     ) : (
-                                        <div>{link}</div>
+                                        <div className="bg-gray-200 h-16 p-2 flex items-center rounded-md">
+                                            <PaperClip className="w-4 h-4" />
+                                            {link.split('/')[3].substring(13)}
+                                        </div>
                                     )}
-                                </div>
+                                </a>
                             ))}
                         </div>
                     </div>
