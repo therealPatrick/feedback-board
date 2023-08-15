@@ -4,10 +4,12 @@ import { useState } from "react";
 import axios from "axios";
 import PaperClip from "./icons/PaperClip";
 import Trash from "./icons/Trash";
+import { MoonLoader } from "react-spinners";
 
 export default function FeedbackFormPopup({ setShow }) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [isUploading, setIsUploading] = useState(false)
     const [uploads, setUploads] = useState([]);
 
     function handleCreatePostButtonClick(ev) {
@@ -19,6 +21,7 @@ export default function FeedbackFormPopup({ setShow }) {
     }
     async function handleAttachFilesInputChange(ev) {
         const files = [...ev.target.files];
+        setIsUploading(true);
         const data = new FormData();
         for (const file of files) {
             data.append('file', file);
@@ -27,6 +30,7 @@ export default function FeedbackFormPopup({ setShow }) {
         setUploads((existingUpload) => {
             return [...existingUpload, ...res.data]
         });
+        setIsUploading(false);
     }
     function handleRemoveFileButtonClick(ev, link) {
         ev.preventDefault();
@@ -78,8 +82,13 @@ export default function FeedbackFormPopup({ setShow }) {
                     </div>
                 )}
                 <div className="flex gap-2 mt-2 justify-end">
-                    <label className="py-2 px-4 text-gray-600 cursor-pointer">
-                        <span>Attach files</span>
+                    <label className={"py-2 px-4 gap-2  cursor-pointer"}>
+                        {isUploading && (
+                            <MoonLoader size={18} />
+                        )}
+                        <span className="{(isUploading ? 'text-gray-300' : 'text-gray-600')}">
+                            {isUploading ? 'Uploading...' : 'Attach files'}
+                        </span>
                         <input multiple onChange={handleAttachFilesInputChange} type="file" className="hidden" />
                     </label>
                     <Button primary onClick={handleCreatePostButtonClick}>Create Post</Button>
