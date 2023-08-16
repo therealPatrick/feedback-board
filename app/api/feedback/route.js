@@ -1,5 +1,5 @@
-import { Feedback } from "@/app/models/feedback";
 import mongoose from "mongoose";
+import { Feedback } from "@/app/models/feedback";
 
 export async function POST(request) {
     const jsonBody = await request.json();
@@ -8,6 +8,10 @@ export async function POST(request) {
     mongoose.connect(mongoUrl);
     await Feedback.create({ title, description, uploads });
     return Response.json({ jsonBody });
+}
+
+export async function GET() {
+    return Response.json(await Feedback.find())
 }
 
 
