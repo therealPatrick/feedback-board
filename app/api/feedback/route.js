@@ -11,6 +11,8 @@ export async function POST(request) {
 }
 
 export async function GET() {
+    const mongoUrl = process.env.MONGO_URL;
+    mongoose.connect(mongoUrl);
     return Response.json(await Feedback.find())
 }
 
