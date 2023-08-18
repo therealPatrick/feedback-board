@@ -21,9 +21,10 @@ export default function Board() {
     }, []);
     useEffect(() => {
         if (session?.user?.email) {
-            const feebackId = localStorage.getItem('vote_after_login');
-            if (feebackId) {
-                alert(feebackId);
+            const feedbackId = localStorage.getItem('vote_after_login');
+            if (feedbackId) {
+                axios.post('/api/vote', { feedbackId })
+                localStorage.removeItem('vote_after_login');
             }
         }
     }, [session?.user?.email])
