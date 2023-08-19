@@ -1,7 +1,18 @@
 import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
-import { Vote } from "@/app/models/vote";
+import { Vote } from "@/app/models/Vote";
 import { authOptions } from "../auth/[...nextauth]/route";
+
+
+export async function GET(request) {
+    const url = new URL(request.url);
+    if (url.searchParams.get('feedbackIds')) {
+        const feedbackIds = url.searchParams.get('feedbackIds').split(',');
+        const votesDocs = await Vote.find({ feedbackId: feedbackIds });
+        return Response.json(votesDocs);
+    }
+    return Response.json([]);
+}
 
 export async function POST(request) {
     mongoose.connect(process.env.MONGO_URL);

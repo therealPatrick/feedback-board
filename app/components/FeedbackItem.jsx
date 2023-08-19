@@ -2,17 +2,27 @@
 import { useState } from "react";
 import Popup from "./Popup";
 import Button from "./Button";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import axios from "axios";
+import { MoonLoader } from "react-spinners";
 
-export default function FeedbackItem({ onOpen, _id, title, description, votesCount }) {
+export default function FeedbackItem({ onOpen, _id, title, description, votes, onVotesChange }) {
     const [showLoginPopup, setShowLoginPopup] = useState(false);
-    const isLoggedIn = false;
+    const [isVotesLoading, setIsVotesLoading] = useState(false);
+    const { data: session } = useSession();
+    const isLoggedIn = !!session?.user?.email;
     function handleVoteButtonClick(ev) {
         ev.stopPropagation();
         ev.preventDefault();
         if (!isLoggedIn) {
             localStorage.setItem('vote_after_login', _id)
             setShowLoginPopup(true);
+        } else {
+            setIsVotesLoading(true);
+            axios.post('/api/vote', { feedbackId: _id, }).then(async () => {
+                await onVotesChange();
+                setIsVotesLoading(false);
+            });
         }
     }
     async function handleGoogleLoginButtonClick(ev) {
@@ -24,6 +34,7 @@ export default function FeedbackItem({ onOpen, _id, title, description, votesCou
 
     return (
         <a href="" onClick={e => { e.preventDefault(); onOpen(); }} className="my-8 flex gap-8 items-center">
+            {_id}
             <div className="flex-grow">
                 <h2 className="font-bold">{title} </h2>
                 <p className="text-gray-600 text-sm">
@@ -38,10 +49,28 @@ export default function FeedbackItem({ onOpen, _id, title, description, votesCou
                         </div>
                     </Popup>
                 )}
-                <button onClick={handleVoteButtonClick} className="shadow-sm border shadow-gray-200 rounded-md py-1 px-4 flex items-center gap-1 text-gray-600">
-                    <span className="triangle-vote-up"></span>
-                    {votesCount || '0'}
-                </button>
+                {JSON.stringify(votes)}
+                {!!votes && (
+                    <button
+                        onClick={handleVoteButtonClick}
+                        className="shadow-sm border shadow-gray-200 
+                   rounded-md py-1 px-4 
+                   flex items-center gap-1 
+                   text-gray-600"
+                    >
+                        {!isVotesLoading && (
+                            <>
+                                <span className="triangle-vote-up"></span>
+                                {votes?.length || '0'}
+                            </>
+                        )}
+                        {isVotesLoading && (
+                            <>
+                                <MoonLoader size={19} />
+                            </>
+                        )}
+                    </button>
+                )}
             </div>
 
         </a>
