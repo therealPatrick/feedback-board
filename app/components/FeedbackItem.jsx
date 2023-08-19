@@ -37,7 +37,7 @@ export default function FeedbackItem({ onOpen,
         await signIn('google')
     }
 
-
+    const iVoted = !!votes.find(v => v.userEmail === session?.user?.email)
     return (
         <a href="" onClick={e => { e.preventDefault(); onOpen(); }} className="my-8 flex gap-8 items-center">
             <div className="flex-grow">
@@ -54,12 +54,9 @@ export default function FeedbackItem({ onOpen,
                         </div>
                     </Popup>
                 )}
-                <button
+                <Button primary={iVoted} className="shadow-sm border"
                     onClick={handleVoteButtonClick}
-                    className="shadow-sm border shadow-gray-200 
-                   rounded-md py-1 px-4 
-                   flex items-center gap-1 
-                   text-gray-600"
+
                 >
                     {!isVotesLoading && (
                         <>
@@ -72,7 +69,7 @@ export default function FeedbackItem({ onOpen,
                             <MoonLoader size={19} />
                         </>
                     )}
-                </button>
+                </Button>
 
             </div>
 

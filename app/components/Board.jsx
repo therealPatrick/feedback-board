@@ -28,8 +28,10 @@ export default function Board() {
         if (session?.user?.email) {
             const feedbackId = localStorage.getItem('vote_after_login');
             if (feedbackId) {
-                axios.post('/api/vote', { feedbackId })
-                localStorage.removeItem('vote_after_login');
+                axios.post('/api/vote', { feedbackId }).then(() => {
+                    localStorage.removeItem('vote_after_login');
+                    fetchVotes();
+                })
             }
         }
     }, [session?.user?.email]);
@@ -78,7 +80,10 @@ export default function Board() {
                 <FeedbackFormPopup setShow={setShowFeedBackPopupForm} />
             )}
             {showFeedbackPopupItem && (
-                <FeedbackItemPopup {...showFeedbackPopupItem} setShow={setShowFeedbackPopupItem} />
+                <FeedbackItemPopup {...showFeedbackPopupItem}
+                    votes={votes.filter(v => v.feedbackId.toString() === showFeedbackPopupItem._id)}
+                    onVotesChange={fetchVotes}
+                    setShow={setShowFeedbackPopupItem} />
             )}
         </main>
     );
