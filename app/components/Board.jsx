@@ -13,6 +13,7 @@ export default function Board() {
     const [showFeedbackPopupForm, setShowFeedBackPopupForm] = useState(false);
     const [showFeedbackPopupItem, setShowFeedbackPopupItem] = useState(null);
     const [feedbacks, setFeedbacks] = useState([])
+    const [votesLoading, setVotesLoading] = useState(false)
     const [votes, setVotes] = useState([]);
     const { data: session } = useSession();
     useEffect(() => {
@@ -33,9 +34,11 @@ export default function Board() {
         }
     }, [session?.user?.email]);
     async function fetchVotes() {
+        setVotesLoading(true)
         const ids = feedbacks.map(f => f._id)
         const res = await axios.get('/api/vote?feedbackIds=' + ids.join(','));
         setVotes(res.data);
+        setVotesLoading(false);
     }
 
     function openFeedbackPopupForm() {
@@ -66,6 +69,7 @@ export default function Board() {
                     <FeedbackItem {...feedback}
                         onVotesChange={fetchVotes}
                         votes={votes.filter(v => v.feedbackId.toString() === feedback._id.toString())}
+                        parentLoadingVotes={votesLoading}
                         onOpen={() => opneFeedbackPopItem(feedback)}
                     />
                 ))}
