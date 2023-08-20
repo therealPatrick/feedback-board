@@ -5,8 +5,9 @@ import axios from "axios";
 import PaperClip from "./icons/PaperClip";
 import Trash from "./icons/Trash";
 import { MoonLoader } from "react-spinners";
+import Attachment from "./Attachment";
 
-export default function FeedbackFormPopup({ setShow }) {
+export default function FeedbackFormPopup({ setShow, onCreate }) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [isUploading, setIsUploading] = useState(false)
@@ -17,6 +18,7 @@ export default function FeedbackFormPopup({ setShow }) {
         axios.post('/api/feedback', { title, description, uploads })
             .then(() => {
                 setShow(false);
+                onCreate();
             })
     }
     async function handleAttachFilesInputChange(ev) {
@@ -61,22 +63,12 @@ export default function FeedbackFormPopup({ setShow }) {
                         <label className="block mt-2 mb-1 text-slate-700">Attachments</label>
                         <div className="flex gap-3">
                             {uploads.map(link => (
-                                <a href={link} target="_blank" className="h-16 relative">
-                                    <button onClick={ev => handleRemoveFileButtonClick(ev, link)}
-                                        className="-right-2 -top-2 absolute
-                                      bg-red-400 p-1 rounded-md 
-                                      text-white">
-                                        <Trash />
-                                    </button>
-                                    {(link.endsWith('.jpg') || link.endsWith('.png')) ? (
-                                        <img className="h-16 w-auto rounded-md" src={link} alt="" />
-                                    ) : (
-                                        <div className="bg-gray-200 h-16 p-2 flex items-center rounded-md">
-                                            <PaperClip className="w-4 h-4" />
-                                            {link.split('/')[3].substring(13)}
-                                        </div>
-                                    )}
-                                </a>
+                                <Attachment
+                                    link={link}
+                                    showRemoveButton={true}
+                                    handleRemoveFileButtonClick={(ev, link) =>
+                                        handleRemoveFileButtonClick(ev, link)}
+                                />
                             ))}
                         </div>
                     </div>
