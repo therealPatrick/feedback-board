@@ -57,7 +57,6 @@ export default function Board() {
 
     return (
         <main className="bg-white md:max-w-2xl mx-auto md:shadow-lg md:rounded-lg md:mt-8 overflow-hidden">
-            {session?.user?.email || 'not logged in'}
             <div className="bg-gradient-to-r from-cyan-500 to-blue-400 p-8">
                 <h1 className="font-bold text-xl">Build Web Apps with Next Js</h1>
                 <p className="text-opacity-90 text-slate-700">Help me decide what I should build next or how can I improve?</p>
