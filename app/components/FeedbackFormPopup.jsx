@@ -6,6 +6,7 @@ import PaperClip from "./icons/PaperClip";
 import Trash from "./icons/Trash";
 import { MoonLoader } from "react-spinners";
 import Attachment from "./Attachment";
+import AttachFilesButton from "./AttachFilesButton";
 
 export default function FeedbackFormPopup({ setShow, onCreate }) {
     const [title, setTitle] = useState('');
@@ -21,24 +22,15 @@ export default function FeedbackFormPopup({ setShow, onCreate }) {
                 onCreate();
             })
     }
-    async function handleAttachFilesInputChange(ev) {
-        const files = [...ev.target.files];
-        setIsUploading(true);
-        const data = new FormData();
-        for (const file of files) {
-            data.append('file', file);
-        }
-        const res = await axios.post('/api/upload', data);
-        setUploads((existingUpload) => {
-            return [...existingUpload, ...res.data]
-        });
-        setIsUploading(false);
-    }
+
     function handleRemoveFileButtonClick(ev, link) {
         ev.preventDefault();
         setUploads(currentUploads => {
             return currentUploads.filter(val => val !== link);
         });
+    }
+    function addNewUploads(newLinks) {
+        setUploads(prevLinks => [...prevLinks, ...newLinks]);
     }
 
     return (
@@ -74,15 +66,7 @@ export default function FeedbackFormPopup({ setShow, onCreate }) {
                     </div>
                 )}
                 <div className="flex gap-2 mt-2 justify-end">
-                    <label className={"py-2 px-4 gap-2  cursor-pointer"}>
-                        {isUploading && (
-                            <MoonLoader size={18} />
-                        )}
-                        <span className="{(isUploading ? 'text-gray-300' : 'text-gray-600')}">
-                            {isUploading ? 'Uploading...' : 'Attach files'}
-                        </span>
-                        <input multiple onChange={handleAttachFilesInputChange} type="file" className="hidden" />
-                    </label>
+                    <AttachFilesButton onNewFiles={addNewUploads} />
                     <Button primary onClick={handleCreatePostButtonClick}>Create Post</Button>
                 </div>
             </form>

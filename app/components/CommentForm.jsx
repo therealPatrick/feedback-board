@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Button from "./Button";
+import AttachFilesButton from "./AttachFilesButton";
 
 export default function CommentForm() {
     const [commentText, setCommentText] = useState('');
@@ -12,7 +13,7 @@ export default function CommentForm() {
                 onChange={e => setCommentText(e.target.value)}
             />
             <div className="flex justify-end gap-2 mt-2">
-                <Button>Attach files</Button>
+                <AttachFilesButton isUploading={false} onInputChange={() => { }} />
                 <Button primary disabled={commentText === ''}>Comment</Button>
             </div>
         </form>
