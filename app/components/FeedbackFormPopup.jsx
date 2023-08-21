@@ -2,16 +2,12 @@ import Popup from "./Popup";
 import Button from "./Button";
 import { useState } from "react";
 import axios from "axios";
-import PaperClip from "./icons/PaperClip";
-import Trash from "./icons/Trash";
-import { MoonLoader } from "react-spinners";
 import Attachment from "./Attachment";
 import AttachFilesButton from "./AttachFilesButton";
 
 export default function FeedbackFormPopup({ setShow, onCreate }) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [isUploading, setIsUploading] = useState(false)
     const [uploads, setUploads] = useState([]);
 
     function handleCreatePostButtonClick(ev) {
