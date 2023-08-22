@@ -2,17 +2,30 @@ import { useState } from "react";
 import Button from "./Button";
 import AttachFilesButton from "./AttachFilesButton";
 import Attachment from "./Attachment";
+import axios from "axios";
 
-export default function CommentForm() {
+export default function CommentForm(feedbackId) {
     const [commentText, setCommentText] = useState('');
     const [uploads, setUploads] = useState([])
 
     function addUploads(newLinks) {
         setUploads(prevLinks => [...prevLinks, ...newLinks])
     }
-    function removeUpload(linkToRemove) {
+    function removeUpload(ev, linkToRemove) {
+        ev.preventDefault();
+        ev.stopPropagation();
         setUploads(prevLinks => prevLinks.filter(link => link !== linkToRemove));
     }
+    function handleCommentButtonClick(ev) {
+        ev.preventDefault();
+        axios.post('/api/comment', {
+            text: commentText,
+            uploads,
+            feedbackId,
+        });
+    }
+
+
     return (
         <form>
             <textarea
@@ -29,7 +42,7 @@ export default function CommentForm() {
                             <div>
                                 <Attachment
                                     link={link} showRemoveButton={true}
-                                    handleRemoveFileButtonClick={() => removeUpload(link)}
+                                    handleRemoveFileButtonClick={(ev, link) => removeUpload(ev, link)}
                                 />
                             </div>
                         ))}
@@ -38,7 +51,12 @@ export default function CommentForm() {
             )}
             <div className="flex justify-end gap-2 mt-2">
                 <AttachFilesButton onNewFiles={addUploads} />
-                <Button primary disabled={commentText === ''}>Comment</Button>
+                <Button
+                    onClick={handleCommentButtonClick}
+                    primary
+                    disabled={commentText === ''}>
+                    Comment
+                </Button>
             </div>
         </form>
     )

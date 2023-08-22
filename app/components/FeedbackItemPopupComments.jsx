@@ -2,9 +2,9 @@ import { useState } from "react";
 import Button from "./Button";
 import Avatar from "./Avatar";
 import CommentForm from "./CommentForm";
+import { handleClientScriptLoad } from "next/script";
 
-export default function FeedbackItemPopupComments() {
-
+export default function FeedbackItemPopupComments(feedbackId) {
 
     return (
         <div className="p-8">
@@ -17,7 +17,7 @@ export default function FeedbackItemPopupComments() {
                     <div className="text-gray-400 mt-2">Anonymous &middot; a few seconds ago</div>
                 </div>
             </div>
-            <CommentForm />
+            <CommentForm feedbackId={feedbackId} />
         </div>
     )
 }
