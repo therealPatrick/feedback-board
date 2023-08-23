@@ -3,7 +3,6 @@ const { Schema, models, model } = require("mongoose");
 const feedbackSchema = new Schema({
     title: { type: String, required: true },
     description: { type: String },
-    // uploads: { type: [String] }
 }, { timestamps: true });
 
 
