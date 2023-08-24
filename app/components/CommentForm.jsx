@@ -4,7 +4,7 @@ import AttachFilesButton from "./AttachFilesButton";
 import Attachment from "./Attachment";
 import axios from "axios";
 
-export default function CommentForm(feedbackId) {
+export default function CommentForm(feedbackId, onPost) {
     const [commentText, setCommentText] = useState('');
     const [uploads, setUploads] = useState([])
 
@@ -26,6 +26,7 @@ export default function CommentForm(feedbackId) {
         });
         setCommentText('');
         setUploads([]);
+        onPost()
     }
 
 

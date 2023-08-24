@@ -9,10 +9,13 @@ import Attachment from "./Attachment";
 export default function FeedbackItemPopupComments(feedbackId) {
     const [comments, setComments] = useState([])
     useEffect(() => {
+        fetchComments();
+    }, []);
+    function fetchComments() {
         axios.get('/api/comment?feedbackId=' + feedbackId).then(res => {
             setComments(res.data);
         })
-    }, []);
+    }
 
     return (
         <div className="p-8">
@@ -37,7 +40,7 @@ export default function FeedbackItemPopupComments(feedbackId) {
                 </div>
             ))}
 
-            <CommentForm feedbackId={feedbackId} />
+            <CommentForm feedbackId={feedbackId} onPost={fetchComments} />
         </div>
     )
 }
