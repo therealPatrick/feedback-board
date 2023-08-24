@@ -26,7 +26,8 @@ export default function FeedbackItemPopupComments(feedbackId) {
                         <div>
                             <p className="text-gray-600">{comment.text}
                             </p>
-                            <div className="text-gray-400 mt-2">Anonymous &middot; a few seconds ago</div>
+                            <div className="text-gray-400 mt-2">
+                                Anonymous &middot; a few seconds ago</div>
                             {comment.uploads?.length > 0 && (
                                 <div className="flex gap-2 mt-2">
                                     {comment.uploads.map(link => (
@@ -39,7 +40,7 @@ export default function FeedbackItemPopupComments(feedbackId) {
 
                 </div>
             ))}
-
+            {/*npm i react-time-ago  */}
             <CommentForm feedbackId={feedbackId} onPost={fetchComments} />
         </div>
     )
