@@ -16,13 +16,16 @@ export default function CommentForm(feedbackId) {
         ev.stopPropagation();
         setUploads(prevLinks => prevLinks.filter(link => link !== linkToRemove));
     }
-    function handleCommentButtonClick(ev) {
+    async function handleCommentButtonClick(ev) {
         ev.preventDefault();
-        axios.post('/api/comment', {
+        await axios.post('/api/comment', {
             text: commentText,
             uploads,
+            // **bug( feedback model not saving in the database )**
             feedbackId,
         });
+        setCommentText('');
+        setUploads([]);
     }
 
 
