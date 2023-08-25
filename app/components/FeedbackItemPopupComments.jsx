@@ -23,14 +23,14 @@ export default function FeedbackItemPopupComments(feedbackId) {
             {comments?.length > 0 && comments.map(comment => (
                 <div className="mb-8">
                     <div className="flex gap-4">
-                        <Avatar />
+                        <Avatar url={comment.user.image} />
                         <div>
                             <p className="text-gray-600">{comment.text}
                             </p>
                             <div className="text-gray-400 mt-2">
-                                Anonymous &middot;
+                                {comment.user.name} &middot;
                                 <ReactTimeAgo
-                                    datetime={'2016-08-08 08:10:12'}
+                                    datetime={comment.createdAt}
                                     locale="en_us"
                                 /></div>
                             {comment.uploads?.length > 0 && (
