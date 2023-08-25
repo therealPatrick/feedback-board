@@ -5,6 +5,7 @@ import CommentForm from "./CommentForm";
 import { handleClientScriptLoad } from "next/script";
 import axios from "axios";
 import Attachment from "./Attachment";
+import ReactTimeAgo from "react-time-ago";
 
 export default function FeedbackItemPopupComments(feedbackId) {
     const [comments, setComments] = useState([])
@@ -27,7 +28,11 @@ export default function FeedbackItemPopupComments(feedbackId) {
                             <p className="text-gray-600">{comment.text}
                             </p>
                             <div className="text-gray-400 mt-2">
-                                Anonymous &middot; a few seconds ago</div>
+                                Anonymous &middot;
+                                <ReactTimeAgo
+                                    datetime={'2016-08-08 08:10:12'}
+                                    locale="en_us"
+                                /></div>
                             {comment.uploads?.length > 0 && (
                                 <div className="flex gap-2 mt-2">
                                     {comment.uploads.map(link => (
