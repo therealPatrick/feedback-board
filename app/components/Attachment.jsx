@@ -1,3 +1,5 @@
+import Image from "next/image";
+import PaperClip from "./icons/PaperClip";
 import Trash from "./icons/Trash";
 
 export default function Attachment({ link, showRemoveButton = false, handleRemoveFileButtonClick }) {
@@ -9,7 +11,7 @@ export default function Attachment({ link, showRemoveButton = false, handleRemov
                 </button>
             )}
             {(link.endsWith('.jpg') || link.endsWith('.png')) ? (
-                <img className="h-16 w-auto rounded-md" src={link} alt="" />
+                <Image className="h-16 w-auto rounded-md" src={link} alt="" />
             ) : (
                 <div className="bg-gray-200 h-16 p-2 flex items-center rounded-md">
                     <PaperClip className="w-4 h-4" />
