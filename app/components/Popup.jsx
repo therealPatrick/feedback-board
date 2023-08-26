@@ -11,7 +11,7 @@ export default function Popup({ setShow, children, title, narrow }) {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            <div className="w-full  ">
+            <div className="w-full h-full overflow-y-scroll">
                 <div className="bg-white md:max-w-2xl md:mx-auto md:rounded-lg overflow-hidden" onClick={e => e.stopPropagation()}>
                     <div className="relative min-h-[40px] md:min-h-0">
                         <button onClick={close} className="absolute top-4 left-8 md:hidden text-gray-600">
