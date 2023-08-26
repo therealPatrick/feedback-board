@@ -25,7 +25,7 @@ export default function FeedbackItemPopup({ _id, title, description, setShow, vo
                 <h2 className="text-lg font-bold mb-2">{title}</h2>
                 <p className="text-gray-600">{description}</p>
                 {uploads?.length > 0 && (
-                    <div className="flex gap-2 mt-4">
+                    <div className="flex gap-2 mt-4" key={'feedbackItemPopup' + link}>
                         {uploads.map(link => (
                             <Attachment />
                         ))}
